@@ -8,5 +8,5 @@
 - install requirements `pip install -r requirements.txt`
 
 ### Using
-##### To run the script, please execute the command ` python <filename> where:
+##### To run the script, please execute the command ` python . -f <filename> where:
 - filename(optional) - `task1.py`
