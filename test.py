@@ -2,6 +2,7 @@ import unittest
 from base import TxtFiles, CsvFiles
 from services import ServiceClass
 from speaker import Speaker
+import os
 
 
 class TestBase(unittest.TestCase):
@@ -20,7 +21,7 @@ class TestService(unittest.TestCase):
     def test_check(self):
         expected_date = 'txt'
         service = ServiceClass('r', 'files/file1.txt')
-        self.assertEqual(expected_date, service.filetype)
+        self.assertEqual(expected_date, service.check_file_type())
 
     def test_logic(self):
         expected_date = "Written to 'csv' file."
@@ -41,12 +42,15 @@ class TestSpeaker(unittest.TestCase):
         self.assertEqual(expected_data, sp.take_mode())
 
     def test_get_all_files(self):
-        extpexted_data = ['file1.csv', 'file1.txt']
+        path = os.path.abspath(os.curdir)
+        extpexted_data = os.listdir(path + '/files/')
         sp = Speaker()
         self.assertEqual(extpexted_data, sp.get_all_files())
 
     def test_chose_file(self):
-        expected_data = 'file1.txt'
+        path = os.path.abspath(os.curdir)
+        final_path = path + '/files/'
+        expected_data = final_path + 'file1.txt'
         arr = ['file1.csv', 'file1.txt']
         sp = Speaker()
         self.assertEqual(expected_data, sp.chose_file(arr))
@@ -57,16 +61,33 @@ class TestSpeaker(unittest.TestCase):
         self.assertEqual(expected_data, sp.create_new_file())
 
     def test_filename_dialog_1(self):
+        path = os.path.abspath(os.curdir)
+        final_path = path + '/files/'
         expected_data = 'file1.txt'
         sp = Speaker()
-        self.assertEqual(expected_data, sp.filename_dialog_1())
+        self.assertEqual(final_path + expected_data, sp.filename_dialog_1())
 
     def test_filename_dialog_0(self):
+        path = os.path.abspath(os.curdir)
+        final_path = path + '/files/'
         expected_data = 'file1.csv'
         sp = Speaker()
-        self.assertEqual(expected_data, sp.filename_dialog_0())
+        self.assertEqual(final_path + expected_data, sp.filename_dialog_0())
 
     def test_dialog(self):
-        expected_data = ['w', 'files/test_file.txt']
+        path = os.path.abspath(os.curdir)
+        final_path = path + '/files/'
+        expected_data = ['w', final_path + 'test_file.txt']
         sp = Speaker()
         self.assertEqual(expected_data, sp.dialog())
+
+    def test_check_dir(self):
+        expected_data = True
+        sp = Speaker()
+        self.assertEqual(expected_data, sp.check_dir())
+
+    def test_get_current_path(self):
+        path = os.path.abspath(os.curdir)
+        expected_data = path + '/files/'
+        sp = Speaker()
+        self.assertEqual(expected_data, sp.get_current_path())

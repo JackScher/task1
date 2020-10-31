@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import csv
 
 
@@ -8,16 +8,18 @@ class Base(ABC):
             head = [next(myfile) for x in range(5)]
             print(''.join(head))
 
-    @abstractmethod
     def write_file(self):
-        pass
+        f = open(self.filename, self.mode)
+        f.write(self.default)
+        f.close()
+        return "Written to 'txt' file."
 
 
 class TxtFiles(Base):
     def __init__(self, mode, filename):
         self.mode = mode
         self.filename = filename
-        self.__default = 'Default lorem 0 lorem lorem lorem!!!\n' \
+        self.default = 'Default lorem 0 lorem lorem lorem!!!\n' \
                          'Default lorem 1 lorem lorem lorem!!!\n' \
                          'Default lorem 2 lorem lorem lorem!!!\n' \
                          'Default lorem 3 lorem lorem lorem!!!\n' \
@@ -25,18 +27,12 @@ class TxtFiles(Base):
                          'Default lorem 5 lorem lorem lorem!!!\n' \
                          'Default lorem 6 lorem lorem lorem!!!\n'
 
-    def write_file(self):
-        f = open(self.filename, self.mode)
-        f.write(self.__default)
-        f.close()
-        return "Written to 'txt' file."
-
 
 class CsvFiles(Base):
     def __init__(self, mode, filename):
         self.mode = mode
         self.filename = filename
-        self.__default = 'Default lorem 3 lorem lorem lorem!!!\n' \
+        self.default = 'Default lorem 3 lorem lorem lorem!!!\n' \
                          ' lorem 3 lorem lorem lorem!!!\n' \
                          ' lorem 3 lorem lorem \n' \
                          ' lorem 3 lorem \n' \
@@ -48,6 +44,6 @@ class CsvFiles(Base):
         with open(self.filename, self.mode) as file:
             writer = csv.writer(file)
             arr = []
-            arr.append(self.__default)
+            arr.append(self.default)
             writer.writerow(arr)
         return "Written to 'csv' file."

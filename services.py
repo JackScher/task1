@@ -6,22 +6,25 @@ class ServiceClass:
     def __init__(self, mode, filename):
         self.mode = mode
         self.filename = filename
-        self.filetype = self.check()
+        self.file_type = self.check_file_type()
 
-    def check(self):
-        arr = self.filename.split('.')
-        file_type = arr[-1]
-        return file_type
+    def check_file_type(self):
+        try:
+            arr = self.filename.split('.')
+            file_type = arr[-1]
+            return file_type
+        except AttributeError:
+            return False
 
     def logic(self):
-        if self.filetype == 'txt':
+        if self.file_type == 'txt':
             txt = TxtFiles(self.mode, self.filename)
             return self.read_write(txt)
-        elif self.filetype == 'csv':
+        elif self.file_type == 'csv':
             csv = CsvFiles(self.mode, self.filename)
             return self.read_write(csv)
         else:
-            print('Wrong type')
+            print('Wrong type or file name')
 
     def read_write(self, obj):
         if self.mode == 'w':
